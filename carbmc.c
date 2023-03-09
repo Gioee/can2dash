@@ -100,7 +100,7 @@ int SendSock(int *fd, char *buffer, unsigned int len)
   Timeout of 5 sec
 ------------------------------------------------------------------------------*/
 
-int RecvSock(int *fd, char *buffer, unsigned int maxlen, unsigned int to)
+int RecvSock(int *fd, char *buffer, unsigned int to)
 {
   int i = 0;
   int j = 0;
@@ -146,7 +146,7 @@ int RecvSock(int *fd, char *buffer, unsigned int maxlen, unsigned int to)
         for (j = 0; j < nbytes; j++)
         {
           // Overflow
-          if (i == (maxlen - 1))
+          if (i == (STDSTR - 1))
             return false;
           // Collect new char
           buffer[i++] = tmp[j];
@@ -191,7 +191,7 @@ int Talk(const char *format, ...)
     while (lines--)
     {
       // Waiting for reply
-      if (!RecvSock(&sockfd, line, STDSTR, 5))
+      if (!RecvSock(&sockfd, line, 5))
       {
         // Debug
         printf("Recv Error!\r\n");
@@ -230,10 +230,10 @@ int ProcessEvents()
 
   while (true)
   {
-    if (RecvSock(&sockfd, line, STDSTR, 1))
+    if (RecvSock(&sockfd, line, 1))
     {
       printf(line);
-      printf("prova");
+      printf("\r\nprova\r\n");
 
       if (strncmp(line, "RX1 0206-01", 10))
       {
@@ -243,26 +243,26 @@ int ProcessEvents()
         switch (id)
         {
         case 81:
-          printf("pulsante in alto a sinistra");
+          printf("pulsante in alto a sinistra\r\n");
           break;
         case 82:
-          printf("Pulsante giù a sinistra");
+          printf("Pulsante giù a sinistra\r\n");
           break;
         case 83:
-          printf("Manopola sinistra");
+          printf("Manopola sinistra\r\n");
           break;
         case 84:
-          printf("Pulsante manopola sinistra");
+          printf("Pulsante manopola sinistra\r\n");
           break;
         case 91:
-          printf("Pulsante destro in alto (successivo)");
+          printf("Pulsante destro in alto (successivo)\r\n");
           break;
         case 92:
-          printf("Pulsante in basso a destra");
+          printf("Pulsante in basso a destra\r\n");
           xdo_send_keysequence_window(x, CURRENTWINDOW, "A", 0);
           break;
         case 93:
-          printf("Manopola destra (Volume)");
+          printf("Manopola destra (Volume)\r\n");
           break;
         }
         id=0;
