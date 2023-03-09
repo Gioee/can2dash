@@ -1,4 +1,4 @@
-
+#include <xdo.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -19,9 +19,6 @@
 #include <signal.h>
 #include <arpa/inet.h>
 
-extern "C" {
-#include <xdo.h>
-}
 
 #include "carbmc.h"
 
