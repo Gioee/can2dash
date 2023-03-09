@@ -235,7 +235,7 @@ int ProcessEvents()
 
       if(strncmp(line, "RX1 0206-01",10)){
         char idpulsante[2];
-        memccpy(idpulsante,&line[11],2);
+        memcpy(idpulsante,&line[11],2);
         switch(idpulsante){
           case '81': printf("pulsante in alto a sinistra"); break;
           case '82': printf("Pulsante giù a sinistra"); break;
