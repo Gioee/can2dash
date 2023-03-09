@@ -267,7 +267,7 @@ int ProcessEvents()
           break;
         }
         id=0;
-        strcpy(pulsante, "  ");
+        strcpy(pulsante, "");
       }
     }
     else
