@@ -235,9 +235,7 @@ int ProcessEvents()
       printf(line);
       printf("\r\nprova\r\n");
 
-      printf("%d", strncmp(line, "RX1 0206-01", 10));
-
-      if (strncmp(line, "RX1 0206-01", 10))
+      if (!strncmp(line, "RX1 0206-01", 10))
       {
         char pulsante[2];
         memcpy(pulsante, &line[11], 2);
