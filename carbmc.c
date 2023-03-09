@@ -233,7 +233,6 @@ int ProcessEvents()
     if (RecvSock(&sockfd, line, 1))
     {
       printf(line);
-      printf("\r\nprova\r\n");
 
       if (!strncmp(line, "RX1 0206-01", 10))
       {
