@@ -300,7 +300,7 @@ int main(int argc, char *argv[])
 
   CarberryConnect();
 
-  SetupCarberry();
+  //SetupCarberry();
   ProcessEvents();
 
   return 0;
