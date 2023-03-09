@@ -18,7 +18,10 @@
 #include <semaphore.h>
 #include <signal.h>
 #include <arpa/inet.h>
+
+extern "C" {
 #include <xdo.h>
+}
 
 #include "carbmc.h"
 
