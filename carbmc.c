@@ -233,18 +233,21 @@ int ProcessEvents()
       char *pb = line;
       printf(line);
 
-      switch (line[2])
-      {
-      case '1':
-        printf("CAN1");
-        break;
-      case '2':
-        printf("CAN2");
-        break;
-      default:
-        printf("CAN INESISTENTE");
-        break;
+      if(strncmp(line, "RX1 0206-01",10)){
+        char idpulsante[2];
+        memccpy(idpulsante,&line[11],2);
+        switch(idpulsante){
+          case '81': printf("pulsante in alto a sinistra"); break;
+          case '82': printf("Pulsante giù a sinistra"); break;
+          case '83': printf("Manopola sinistra"); break;
+          case '84': printf("Pulsante manopola sinistra"); break;
+          case '91': printf("Pulsante destro in alto (successivo)"); break;
+          case '92': printf("Pulsante in basso a destra"); break;
+          case '93': printf("Manopola destra (Volume)"); break;
+        }
+
       }
+     
     }
     else
     {
@@ -300,7 +303,7 @@ int main(int argc, char *argv[])
 
   CarberryConnect();
 
-  //SetupCarberry();
+  // SetupCarberry();
   ProcessEvents();
 
   return 0;
