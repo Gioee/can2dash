@@ -232,9 +232,8 @@ int ProcessEvents()
   {
     if (RecvSock(&sockfd, line, STDSTR, 1))
     {
-      // Process received event
-      char *pb = line;
       printf(line);
+      printf("prova");
 
       if (strncmp(line, "RX1 0206-01", 10))
       {
