@@ -21,11 +21,11 @@
 #include "carbmc.h"
 
 int sockfd = 0;
-int xbmcfd = 0;
 int divert = true;
 
 /*------------------------------------------------------------------------------
 ------------------------------------------------------------------------------*/
+
 int CarberryConnect()
 {
   struct sockaddr_in serv_addr;
@@ -61,29 +61,30 @@ int CarberryConnect()
 
     if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
-       printf("Carberry Server Connection Failed. Sleep and retry\r\n");
-       sleep(1);
-       continue;
+      printf("Carberry Server Connection Failed. Sleep and retry\r\n");
+      sleep(1);
+      continue;
     }
     else
     {
-      //Ok!
+      // Ok!
       printf("Carberry Ready\r\n");
       return true;
     }
   }
 }
- 
+
 /*------------------------------------------------------------------------------
   Send a single line (CR/LF terminated) to socket
 ------------------------------------------------------------------------------*/
-int SendSock(int* fd, char* buffer, unsigned int len)
+
+int SendSock(int *fd, char *buffer, unsigned int len)
 {
-  //Send to socket
+  // Send to socket
   int sent = send(*fd, buffer, len, 0);
   if (sent <= 0)
   {
-    //Maybe server has closed connection
+    // Maybe server has closed connection
     *fd = 0;
     return false;
   }
@@ -97,7 +98,8 @@ int SendSock(int* fd, char* buffer, unsigned int len)
   Receive a single line (CR/LF terminated) from socket
   Timeout of 5 sec
 ------------------------------------------------------------------------------*/
-int RecvSock(int* fd, char* buffer, unsigned int maxlen, unsigned int to)
+
+int RecvSock(int *fd, char *buffer, unsigned int maxlen, unsigned int to)
 {
   int i = 0;
   int j = 0;
@@ -110,49 +112,50 @@ int RecvSock(int* fd, char* buffer, unsigned int maxlen, unsigned int to)
   {
     FD_ZERO(&reading);
     FD_SET(*fd, &reading);
-    //timeout
-    timeout.tv_sec  = to;
+    // timeout
+    timeout.tv_sec = to;
     timeout.tv_usec = 0;
 
-    //Waiting for something
-    switch (select(*fd+1, &reading, NULL, NULL, &timeout))
+    // Waiting for something
+    switch (select(*fd + 1, &reading, NULL, NULL, &timeout))
     {
-      //Error
-      case -1:
-        buffer[i] = 0;
-        return false;
+    // Error
+    case -1:
+      buffer[i] = 0;
+      return false;
       break;
-      //Timeout
-      case 0:
-        buffer[i] = 0;
-        return false;
+    // Timeout
+    case 0:
+      buffer[i] = 0;
+      return false;
       break;
-      //Data
-      default:
-        if (FD_ISSET(*fd, &reading))
+    // Data
+    default:
+      if (FD_ISSET(*fd, &reading))
+      {
+        // Get socket chars
+        nbytes = recv(*fd, tmp, STDSTR, 0);
+        // Error or closed
+        if (nbytes <= 0)
         {
-          //Get socket chars
-          nbytes = recv(*fd, tmp, STDSTR, 0);
-          //Error or closed
-          if (nbytes <= 0)
-          {
-            *fd = 0;
-            return false;
-          }
+          *fd = 0;
+          return false;
+        }
 
-          for (j=0; j<nbytes; j++)
+        for (j = 0; j < nbytes; j++)
+        {
+          // Overflow
+          if (i == (maxlen - 1))
+            return false;
+          // Collect new char
+          buffer[i++] = tmp[j];
+          if (tmp[j] == '\n')
           {
-            //Overflow
-            if (i == (maxlen-1)) return false;
-            //Collect new char
-            buffer[i++] = tmp[j];
-            if (tmp[j] == '\n')
-            {
-              buffer[i++] = 0;
-              return true;
-            }
+            buffer[i++] = 0;
+            return true;
           }
         }
+      }
       break;
     }
   }
@@ -160,6 +163,7 @@ int RecvSock(int* fd, char* buffer, unsigned int maxlen, unsigned int to)
 
 /*------------------------------------------------------------------------------
 ------------------------------------------------------------------------------*/
+
 int Talk(const char *format, ...)
 {
   unsigned int lines = 1000;
@@ -170,31 +174,32 @@ int Talk(const char *format, ...)
 
   while (tries--)
   {
-    //Prepare command
+    // Prepare command
     va_start(ap, format);
     vsprintf(line, format, ap);
     va_end(ap);
 
-    //Send command to server
+    // Send command to server
     if (!SendSock(&sockfd, line, strlen(line)))
     {
-      //Debug
+      // Debug
       printf("Send Error!\r\n");
       CarberryConnect();
       continue;
     }
     while (lines--)
     {
-      //Waiting for reply
+      // Waiting for reply
       if (!RecvSock(&sockfd, line, STDSTR, 5))
       {
-        //Debug
+        // Debug
         printf("Recv Error!\r\n");
-        if (!sockfd) CarberryConnect();
+        if (!sockfd)
+          CarberryConnect();
         break;
       }
-      //Parse reply
-      if      (strstr(line, "OK"))
+      // Parse reply
+      if (strstr(line, "OK"))
       {
         return true;
       }
@@ -204,39 +209,50 @@ int Talk(const char *format, ...)
       }
       else
       {
-        //Get another line
+        // Get another line
       }
     }
   }
   return false;
 }
 
-
-
 /*------------------------------------------------------------------------------
 ------------------------------------------------------------------------------*/
+
 int ProcessEvents()
 {
   char line[STDSTR];
-  
+
   printf("Continue processing events...\r\n");
 
   while (true)
   {
     if (RecvSock(&sockfd, line, STDSTR, 1))
     {
-      //Process received event
-      char* pb = line;
+      // Process received event
+      char *pb = line;
       printf(line);
-      //TermEvntDynamic((void*)&TermEvntRoot, 0, 0, &pb);
+
+      switch (line[3])
+      {
+      case '1':
+        printf("CAN1");
+        break;
+      case '2':
+        printf("CAN2");
+        break;
+      default:
+        printf("CAN INESISTENTE");
+        break;
+      }
     }
     else
     {
-      //Try to reconnect
-      if (!sockfd) CarberryConnect();
+      // Try to reconnect
+      if (!sockfd)
+        CarberryConnect();
     }
   }
-
 }
 
 /*------------------------------------------------------------------------------
@@ -245,17 +261,21 @@ void SetupCarberry()
 {
   printf("Setup Carberry interface...\r\n");
 
-  //if (Talk("VERSION\r\n")) printf("Version Ok!\r\n");
-  if (Talk("AT\r\n")) printf("AT Ok!\r\n");
+  // if (Talk("VERSION\r\n")) printf("Version Ok!\r\n");
+  if (Talk("AT\r\n"))
+    printf("AT Ok!\r\n");
 
-  //Enable notification
-  if (Talk("CAN USER FILTER CH1 0 0206\r\n"))  printf("FILTRO INDEX 206 IMPOSTATO\r\n");
-  if (Talk("CAN USER MASK CH1 0FFF\r\n"))  printf("MASCHERA xFFF IMPOSTATA \r\n");
-  //if (Talk("CAN USER ALIGN RIGHT\r\n"))  printf("CAN ALLINEATO A DESTRA\r\n");
-  if (Talk("CAN USER OPEN CH1 95K2\r\n"))  printf("CAN APERTO A 95K2\r\n");
-  //if (Talk("SWC CONFIG SOURCE NOTIFY\r\n")) printf("Notify Ok!\r\n");
-  //if (Talk("SWC CONFIG FACE NOTIFY\r\n"))   printf("Notify Ok!\r\n");
- }
+  // Enable notification
+  if (Talk("CAN USER FILTER CH1 0 0206\r\n"))
+    printf("FILTRO INDEX 206 IMPOSTATO\r\n");
+  if (Talk("CAN USER MASK CH1 0FFF\r\n"))
+    printf("MASCHERA xFFF IMPOSTATA \r\n");
+  // if (Talk("CAN USER ALIGN RIGHT\r\n"))  printf("CAN ALLINEATO A DESTRA\r\n");
+  if (Talk("CAN USER OPEN CH1 95K2\r\n"))
+    printf("CAN APERTO A 95K2\r\n");
+  // if (Talk("SWC CONFIG SOURCE NOTIFY\r\n")) printf("Notify Ok!\r\n");
+  // if (Talk("SWC CONFIG FACE NOTIFY\r\n"))   printf("Notify Ok!\r\n");
+}
 
 /*------------------------------------------------------------------------------
 ------------------------------------------------------------------------------*/
@@ -263,7 +283,6 @@ void terminal_kill_handler(int signum)
 {
   printf("\r\nTerminal kill signal handled\r\n");
   close(sockfd);
-  close(xbmcfd);
   exit(0);
 }
 
@@ -273,9 +292,11 @@ int main(int argc, char *argv[])
 {
   printf("Carberry CAN2DASH Control\r\n");
 
-  //Kill hook
-  if (signal(SIGINT,  terminal_kill_handler) == SIG_IGN) signal(SIGINT,  SIG_IGN);
-  if (signal(SIGTERM, terminal_kill_handler) == SIG_IGN) signal(SIGTERM, SIG_IGN);
+  // Kill hook
+  if (signal(SIGINT, terminal_kill_handler) == SIG_IGN)
+    signal(SIGINT, SIG_IGN);
+  if (signal(SIGTERM, terminal_kill_handler) == SIG_IGN)
+    signal(SIGTERM, SIG_IGN);
 
   CarberryConnect();
 
