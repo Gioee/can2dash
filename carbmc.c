@@ -17,11 +17,12 @@
 #include <malloc.h>
 #include <semaphore.h>
 #include <signal.h>
+#include <arpa/inet.h>
+#include <xdo.h>
 
 #include "carbmc.h"
 
 int sockfd = 0;
-int divert = true;
 
 /*------------------------------------------------------------------------------
 ------------------------------------------------------------------------------*/
@@ -225,6 +226,8 @@ int ProcessEvents()
 
   printf("Continue processing events...\r\n");
 
+  xdo_t * x = xdo_new(NULL);
+
   while (true)
   {
     if (RecvSock(&sockfd, line, STDSTR, 1))
@@ -257,11 +260,14 @@ int ProcessEvents()
           break;
         case 92:
           printf("Pulsante in basso a destra");
+          xdo_send_keysequence_window(x, CURRENTWINDOW, "A", 0);
           break;
         case 93:
           printf("Manopola destra (Volume)");
           break;
         }
+        id=0;
+        strcpy(pulsante, "  ");
       }
     }
     else
