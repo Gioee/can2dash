@@ -240,25 +240,25 @@ int ProcessEvents()
         int id = atoi(pulsante);
         switch (id)
         {
-        case '81':
+        case 81:
           printf("pulsante in alto a sinistra");
           break;
-        case '82':
+        case 82:
           printf("Pulsante giù a sinistra");
           break;
-        case '83':
+        case 83:
           printf("Manopola sinistra");
           break;
-        case '84':
+        case 84:
           printf("Pulsante manopola sinistra");
           break;
-        case '91':
+        case 91:
           printf("Pulsante destro in alto (successivo)");
           break;
-        case '92':
+        case 92:
           printf("Pulsante in basso a destra");
           break;
-        case '93':
+        case 93:
           printf("Manopola destra (Volume)");
           break;
         }
