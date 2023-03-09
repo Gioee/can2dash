@@ -233,7 +233,7 @@ int ProcessEvents()
       char *pb = line;
       printf(line);
 
-      switch (line[3])
+      switch (line[2])
       {
       case '1':
         printf("CAN1");
