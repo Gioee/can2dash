@@ -243,10 +243,10 @@ int ProcessEvents()
         int idprex = atoi(prex);
 
         char pulsante[2];
-        memcpy(pulsante, &line[11], 2);
+        //memcpy(pulsante, &line[11], 2);
         int idpulsante = atoi(pulsante);
 
-        printf("PROVA-----    %s\r\n", pulsante);
+        printf("PROVA-----    %s\r\n", line);
 
         switch (idprex)
         {
