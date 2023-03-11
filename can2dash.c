@@ -19,7 +19,6 @@
 #include <signal.h>
 #include <arpa/inet.h>
 
-
 #include "can2dash.h"
 
 int sockfd = 0;
@@ -226,7 +225,7 @@ int ProcessEvents()
 
   printf("Continue processing events...\r\n");
 
-  xdo_t * x = xdo_new(NULL);
+  xdo_t *x = xdo_new(NULL);
 
   while (true)
   {
@@ -234,80 +233,100 @@ int ProcessEvents()
     {
       printf(line);
 
-      if (strncmp(line, "RX1 0206-00", 11)==0 || strncmp(line, "RX1 0206-08", 11)==0)
-      {
-        char pulsante[2];
-        memcpy(pulsante, &line[11], 2);
-        int id = atoi(pulsante);
-        switch (id)
-        {
-        case 81:
-          printf("pulsante in alto a sinistra\r\n");
-          xdo_send_keysequence_window(x, CURRENTWINDOW, "G", 0);
-          break;
-        case 82:
-          printf("Pulsante giù a sinistra\r\n");
-          xdo_send_keysequence_window(x, CURRENTWINDOW, "F", 0);
-          break;
-        case 83:
-          if(line[14]=='F'){
-            printf("Manopola sinistra SU\r\n");
-            xdo_send_keysequence_window(x, CURRENTWINDOW, "H", 0);
-          } else {
-            printf("Manopola sinistra GIU\r\n");
-            xdo_send_keysequence_window(x, CURRENTWINDOW, "E", 0);
-          }
-          break;
-        case 84:
-          printf("Pulsante manopola sinistra\r\n");
-          xdo_send_keysequence_window(x, CURRENTWINDOW, "D", 0);
-          break;
-        case 91:
-          printf("Pulsante destro in alto (successivo)\r\n");
-          xdo_send_keysequence_window(x, CURRENTWINDOW, "C", 0);
-          break;
-        case 92:
-          printf("Pulsante in basso a destra\r\n");
-          xdo_send_keysequence_window(x, CURRENTWINDOW, "A", 0);
-          break;
-        case 93:
-          if(line[14]=='F'){
-            printf("Manopola destra (Volume) GIU\r\n");
-            xdo_send_keysequence_window(x, CURRENTWINDOW, "B", 0);
-          } else {
-            printf("Manopola destra (Volume) SU\r\n");
-            xdo_send_keysequence_window(x, CURRENTWINDOW, "I", 0);
-          }
-          break;
-        }
-      }
+      // Esempio RX1 0206-008401
 
-      if (line[14]=='4') //strncmp(line, "RX1 0206-01", 11)==0 && 
+      if (strncmp(line, "RX1 0206", 8) == 0 || strncmp(line, "RX1 0206-08", 11) == 0)
       {
+
+        char prex[2];
+        memcpy(prex, &line[9], 2);
+        int idprex = atoi(prex);
+
         char pulsante[2];
         memcpy(pulsante, &line[11], 2);
-        int id = atoi(pulsante);
-        switch (id)
+        int idpulsante = atoi(pulsante);
+
+        switch (idprex)
         {
-        case 81:
-          printf("PREMUTO pulsante in alto a sinistra\r\n");
-          xdo_send_keysequence_window(x, CURRENTWINDOW, "J", 0);
+        case 00:
+          switch (idpulsante)
+          {
+          case 81:
+            printf("pulsante in alto a sinistra\r\n");
+            xdo_send_keysequence_window(x, CURRENTWINDOW, "G", 0);
+            break;
+          case 82:
+            printf("Pulsante giù a sinistra\r\n");
+            xdo_send_keysequence_window(x, CURRENTWINDOW, "F", 0);
+            break;
+          case 83:
+            if (line[14] == 'F')
+            {
+              printf("Manopola sinistra SU\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "H", 0);
+            }
+            else
+            {
+              printf("Manopola sinistra GIU\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "E", 0);
+            }
+            break;
+          case 84:
+            printf("Pulsante manopola sinistra\r\n");
+            xdo_send_keysequence_window(x, CURRENTWINDOW, "D", 0);
+            break;
+          case 91:
+            printf("Pulsante destro in alto (successivo)\r\n");
+            xdo_send_keysequence_window(x, CURRENTWINDOW, "C", 0);
+            break;
+          case 92:
+            printf("Pulsante in basso a destra\r\n");
+            xdo_send_keysequence_window(x, CURRENTWINDOW, "A", 0);
+            break;
+          case 93:
+            if (line[14] == 'F')
+            {
+              printf("Manopola destra (Volume) GIU\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "B", 0);
+            }
+            else
+            {
+              printf("Manopola destra (Volume) SU\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "I", 0);
+            }
+            break;
+          }
           break;
-        case 82:
-          printf("PREMUTO Pulsante giù a sinistra\r\n");
-          xdo_send_keysequence_window(x, CURRENTWINDOW, "K", 0);
+        case 01:
+          if (line[14] == PREMUTO)
+          {
+            switch (idpulsante)
+            {
+            case 81:
+              printf("PREMUTO pulsante in alto a sinistra\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "J", 0);
+              break;
+            case 82:
+              printf("PREMUTO Pulsante giù a sinistra\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "K", 0);
+              break;
+            case 84:
+              printf("PREMUTO Pulsante manopola sinistra\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "L", 0);
+              break;
+            case 91:
+              printf("PREMUTO Pulsante destro in alto (successivo)\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "M", 0);
+              break;
+            case 92:
+              printf("PREMUTO Pulsante in basso a destra\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "N", 0);
+              break;
+            }
+          }
           break;
-        case 84:
-          printf("PREMUTO Pulsante manopola sinistra\r\n");
-          xdo_send_keysequence_window(x, CURRENTWINDOW, "L", 0);
-          break;
-        case 91:
-          printf("PREMUTO Pulsante destro in alto (successivo)\r\n");
-          xdo_send_keysequence_window(x, CURRENTWINDOW, "M", 0);
-          break;
-        case 92:
-          printf("PREMUTO Pulsante in basso a destra\r\n");
-          xdo_send_keysequence_window(x, CURRENTWINDOW, "N", 0);
+        default:
+          printf("ERRORE INESISTENTE");
           break;
         }
       }
