@@ -252,7 +252,7 @@ int ProcessEvents()
         {
 
         case 01:
-        printf("prova1\r\n");
+        printf("prova1%d\r\n", idpulsante);
           if (line[14] == PREMUTO)
           {
             switch (idpulsante)
@@ -281,7 +281,7 @@ int ProcessEvents()
           }
           break;
         default:
-        printf("pr2r\n");
+        printf("pr2r%d\r\n", idpulsante);
           switch (idpulsante)
           {
           case 81:
