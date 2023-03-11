@@ -237,7 +237,7 @@ int ProcessEvents()
 
       if (strncmp(line, "RX1 0206", 8) == 0)
       {
-printf("prova\r\n");
+
         char prex[2];
         memcpy(prex, &line[9], 2);
         int idprex = atoi(prex);
@@ -246,10 +246,13 @@ printf("prova\r\n");
         memcpy(pulsante, &line[11], 2);
         int idpulsante = atoi(pulsante);
 
+        printf("prova\r\n");
+
         switch (idprex)
         {
 
         case 01:
+        printf("prova1\r\n");
           if (line[14] == PREMUTO)
           {
             switch (idpulsante)
@@ -278,6 +281,7 @@ printf("prova\r\n");
           }
           break;
         default:
+        printf("pr2r\n");
           switch (idpulsante)
           {
           case 81:
