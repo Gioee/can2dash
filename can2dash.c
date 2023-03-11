@@ -235,7 +235,7 @@ int ProcessEvents()
 
       // Esempio RX1 0206-008401
 
-      if (strncmp(line, "RX1 0206", 8) == 0 || strncmp(line, "RX1 0206-08", 11) == 0)
+      if (strncmp(line, "RX1 0206", 8) == 0)
       {
 
         char prex[2];
@@ -248,7 +248,36 @@ int ProcessEvents()
 
         switch (idprex)
         {
-        case 00:
+
+        case 01:
+          if (line[14] == PREMUTO)
+          {
+            switch (idpulsante)
+            {
+            case 81:
+              printf("PREMUTO pulsante in alto a sinistra\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "J", 0);
+              break;
+            case 82:
+              printf("PREMUTO Pulsante giù a sinistra\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "K", 0);
+              break;
+            case 84:
+              printf("PREMUTO Pulsante manopola sinistra\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "L", 0);
+              break;
+            case 91:
+              printf("PREMUTO Pulsante destro in alto (successivo)\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "M", 0);
+              break;
+            case 92:
+              printf("PREMUTO Pulsante in basso a destra\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "N", 0);
+              break;
+            }
+          }
+          break;
+        default:
           switch (idpulsante)
           {
           case 81:
@@ -296,37 +325,6 @@ int ProcessEvents()
             }
             break;
           }
-          break;
-        case 01:
-          if (line[14] == PREMUTO)
-          {
-            switch (idpulsante)
-            {
-            case 81:
-              printf("PREMUTO pulsante in alto a sinistra\r\n");
-              xdo_send_keysequence_window(x, CURRENTWINDOW, "J", 0);
-              break;
-            case 82:
-              printf("PREMUTO Pulsante giù a sinistra\r\n");
-              xdo_send_keysequence_window(x, CURRENTWINDOW, "K", 0);
-              break;
-            case 84:
-              printf("PREMUTO Pulsante manopola sinistra\r\n");
-              xdo_send_keysequence_window(x, CURRENTWINDOW, "L", 0);
-              break;
-            case 91:
-              printf("PREMUTO Pulsante destro in alto (successivo)\r\n");
-              xdo_send_keysequence_window(x, CURRENTWINDOW, "M", 0);
-              break;
-            case 92:
-              printf("PREMUTO Pulsante in basso a destra\r\n");
-              xdo_send_keysequence_window(x, CURRENTWINDOW, "N", 0);
-              break;
-            }
-          }
-          break;
-        default:
-          printf("ERRORE INESISTENTE");
           break;
         }
       }
