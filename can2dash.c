@@ -246,7 +246,7 @@ int ProcessEvents()
         memcpy(puls, &line[11], 2);
         int idpulsante = atoi(puls);
 
-        printf("PROVA-----    %s\r\n", prex);
+        printf("PROVA-----    %d\r\n", idprex);
 
         switch (idprex)
         {
