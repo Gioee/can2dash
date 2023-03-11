@@ -282,7 +282,7 @@ int ProcessEvents()
         }
       }
 
-      if (strncmp(line, "RX1 0206-01", 11)==0 && line[14]='4')
+      if (strncmp(line, "RX1 0206-01", 11)==0 && line[14]=='4')
       {
         char pulsante[2];
         memcpy(pulsante, &line[11], 2);
