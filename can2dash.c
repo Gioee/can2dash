@@ -237,7 +237,7 @@ int ProcessEvents()
 
       if (strncmp(line, "RX1 0206", 8) == 0)
       {
-printf("prova");
+printf("prova\r\n");
         char prex[2];
         memcpy(prex, &line[9], 2);
         int idprex = atoi(prex);
