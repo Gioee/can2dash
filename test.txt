@@ -6,8 +6,8 @@ RX1 0206-088301
 RX1 0206-088301
 RX1 0206-088301
 RX1 0206-088301
-RX1 0206-008201
-RX1 0206-080301
+RX1 0206-008301
+RX1 0206-008301
 RX1 0206-088301
 RX1 0206-018400
 RX1 0206-018401
@@ -28,75 +28,25 @@ RX1 0206-008408
 
 
 
-CRX1 0206-019101
-
-Pulsante destro in alto (successivo)
-
-CRX1 0206-009101
-
-aasdk
-
-CRX1 0206-019100
-
-logopulsante destro in alto (successivo) Pulsante destro in alto
-
-(successivo)
-
-to
-
-CRX1 0206-019101
-
-Pulsante destro in (successivo)
-
-St CRX1 0206-009101 Pulsante destro in alto (successivo)
-
-CRX1 0206-019100
-
-estreamer
-
-Pulsante destro in alto (successivo) CRX1 0206-019101
-
-openauto
-
-Pulsante destro in alto (successivo) CRX1 0206-009101 Pulsante destro in alto (successivo)
-
-CRX1 0206-018200 Pulsante giù a sinistra
-
-FRX1 0206-018201
-
-Pulsante giù a sinistra
-
-dash
-
-FRX1 0206-008201
-
-
-
-
-FRX1 0206-018201
-
-Pulsante giù a sinistra FRX1 0206-008201
-
-aasdk
-
-logopulsante giù a sinistra FRX1 0206-018100
-
-pulsante in alto a sinistra GRX1 0206-018101 pulsante in alto a Anistra
-
-estreamer
-
-St GRX1 0206-008101 pulsante in alto a sinistra
-
-GRX1 0206-018100
-
-pulsante in alto a sinistra GRX1 0206-018101
-
-openauto
-
-pulsante in alto a sinistra GRX1 0206-008101
-
-pulsante in alto a sinistra
-
-GRX1 0206-018200 Pulsante giù a sinistra
-
-FRX1 0206-018201 Pulsante giù a sinistra FRX1 0206-008201
+RX1 0206-019101
+RX1 0206-009101
+RX1 0206-019100
+RX1 0206-019101
+RX1 0206-009101
+RX1 0206-019100
+RX1 0206-019101
+RX1 0206-009101
+RX1 0206-018200
+RX1 0206-018201
+RX1 0206-008201
+RX1 0206-018201
+RX1 0206-008201
+RX1 0206-018100
+RX1 0206-018101
+RX1 0206-008101
+RX1 0206-018100
+RX1 0206-018101
+RX1 0206-008101
+RX1 0206-018200
+RX1 0206-018201
+RX1 0206-008201
