@@ -238,13 +238,12 @@ int ProcessEvents()
       if (strncmp(line, "RX1 0206", 8) == 0)
       {
 
-        char prex[2];
+        char prex[2], puls[2];
+        
         memcpy(prex, &line[9], 2);
         int idprex = atoi(prex);
 
-        char puls[2];
-        printf("PROVA-----    %s\r\n", puls);
-        memcpy(puls, &line[9], 2);
+        memcpy(puls, &line[11], 2);
         int idpulsante = atoi(puls);
 
         printf("PROVA-----    %s\r\n", puls);
