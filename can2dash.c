@@ -246,13 +246,12 @@ int ProcessEvents()
         memcpy(pulsante, &line[11], 2);
         int idpulsante = atoi(pulsante);
 
-        printf("pr%do%sva\r\n", idpulsante, pulsante);
+        printf("PROVA-----    %s\r\n", pulsante);
 
         switch (idprex)
         {
 
         case 01:
-        printf("prova1%d\r\n", idpulsante);
           if (line[14] == PREMUTO)
           {
             switch (idpulsante)
@@ -281,7 +280,6 @@ int ProcessEvents()
           }
           break;
         default:
-        printf("pr2r%d\r\n", idpulsante);
           switch (idpulsante)
           {
           case 81:
