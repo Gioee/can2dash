@@ -234,7 +234,7 @@ int ProcessEvents()
     {
       printf(line);
 
-      if (strncmp(line, "RX1 0206-01", 10)==0)
+      if (strncmp(line, "RX1 0206-00", 11)==0 || strncmp(line, "RX1 0206-08", 11)==0)
       {
         char pulsante[2];
         memcpy(pulsante, &line[11], 2);
@@ -250,7 +250,7 @@ int ProcessEvents()
           xdo_send_keysequence_window(x, CURRENTWINDOW, "F", 0);
           break;
         case 83:
-          if(line[14]=="F"){
+          if(line[14]=='F'){
             printf("Manopola sinistra SU\r\n");
             xdo_send_keysequence_window(x, CURRENTWINDOW, "H", 0);
           } else {
@@ -271,7 +271,7 @@ int ProcessEvents()
           xdo_send_keysequence_window(x, CURRENTWINDOW, "A", 0);
           break;
         case 93:
-          if(line[14]=="F"){
+          if(line[14]=='F'){
             printf("Manopola destra (Volume) GIU\r\n");
             xdo_send_keysequence_window(x, CURRENTWINDOW, "B", 0);
           } else {
@@ -280,8 +280,36 @@ int ProcessEvents()
           }
           break;
         }
-        id=0;
-        strcpy(pulsante, "");
+      }
+
+      if (strncmp(line, "RX1 0206-01", 11)==0 && line[14]='4')
+      {
+        char pulsante[2];
+        memcpy(pulsante, &line[11], 2);
+        int id = atoi(pulsante);
+        switch (id)
+        {
+        case 81:
+          printf("PREMUTO pulsante in alto a sinistra\r\n");
+          xdo_send_keysequence_window(x, CURRENTWINDOW, "J", 0);
+          break;
+        case 82:
+          printf("PREMUTO Pulsante giù a sinistra\r\n");
+          xdo_send_keysequence_window(x, CURRENTWINDOW, "K", 0);
+          break;
+        case 84:
+          printf("PREMUTO Pulsante manopola sinistra\r\n");
+          xdo_send_keysequence_window(x, CURRENTWINDOW, "L", 0);
+          break;
+        case 91:
+          printf("PREMUTO Pulsante destro in alto (successivo)\r\n");
+          xdo_send_keysequence_window(x, CURRENTWINDOW, "M", 0);
+          break;
+        case 92:
+          printf("PREMUTO Pulsante in basso a destra\r\n");
+          xdo_send_keysequence_window(x, CURRENTWINDOW, "N", 0);
+          break;
+        }
       }
     }
     else
