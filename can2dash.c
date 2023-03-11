@@ -244,7 +244,7 @@ int ProcessEvents()
 
         char puls[2];
         printf("PROVA-----    %s\r\n", puls);
-        memcpy(puls, &line[11], 2);
+        memcpy(puls, &line[9], 2);
         int idpulsante = atoi(puls);
 
         printf("PROVA-----    %s\r\n", puls);
