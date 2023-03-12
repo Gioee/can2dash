@@ -227,6 +227,8 @@ int ProcessEvents()
 
   xdo_t *x = xdo_new(NULL);
 
+  bool premuto = false;
+
   while (true)
   {
     if (RecvSock(&sockfd, line, 1))
@@ -254,6 +256,7 @@ int ProcessEvents()
         case 01:
           if (line[14] == PREMUTO)
           {
+            premuto = true;
             switch (idpulsante)
             {
             case 81:
@@ -280,52 +283,59 @@ int ProcessEvents()
           }
           break;
         default:
-          switch (idpulsante)
+          if (premuto == true)
           {
-          case 81:
-            printf("pulsante in alto a sinistra\r\n");
-            xdo_send_keysequence_window(x, CURRENTWINDOW, "G", 0);
-            break;
-          case 82:
-            printf("Pulsante giù a sinistra\r\n");
-            xdo_send_keysequence_window(x, CURRENTWINDOW, "F", 0);
-            break;
-          case 83:
-            if (line[14] == 'F')
+            premuto = false;
+          }
+          else
+          {
+            switch (idpulsante)
             {
-              printf("Manopola sinistra SU\r\n");
-              xdo_send_keysequence_window(x, CURRENTWINDOW, "H", 0);
+            case 81:
+              printf("pulsante in alto a sinistra\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "G", 0);
+              break;
+            case 82:
+              printf("Pulsante giù a sinistra\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "F", 0);
+              break;
+            case 83:
+              if (line[14] == 'F')
+              {
+                printf("Manopola sinistra SU\r\n");
+                xdo_send_keysequence_window(x, CURRENTWINDOW, "H", 0);
+              }
+              else
+              {
+                printf("Manopola sinistra GIU\r\n");
+                xdo_send_keysequence_window(x, CURRENTWINDOW, "E", 0);
+              }
+              break;
+            case 84:
+              printf("Pulsante manopola sinistra\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "D", 0);
+              break;
+            case 91:
+              printf("Pulsante destro in alto (successivo)\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "C", 0);
+              break;
+            case 92:
+              printf("Pulsante in basso a destra\r\n");
+              xdo_send_keysequence_window(x, CURRENTWINDOW, "A", 0);
+              break;
+            case 93:
+              if (line[14] == 'F')
+              {
+                printf("Manopola destra (Volume) GIU\r\n");
+                xdo_send_keysequence_window(x, CURRENTWINDOW, "B", 0);
+              }
+              else
+              {
+                printf("Manopola destra (Volume) SU\r\n");
+                xdo_send_keysequence_window(x, CURRENTWINDOW, "I", 0);
+              }
+              break;
             }
-            else
-            {
-              printf("Manopola sinistra GIU\r\n");
-              xdo_send_keysequence_window(x, CURRENTWINDOW, "E", 0);
-            }
-            break;
-          case 84:
-            printf("Pulsante manopola sinistra\r\n");
-            xdo_send_keysequence_window(x, CURRENTWINDOW, "D", 0);
-            break;
-          case 91:
-            printf("Pulsante destro in alto (successivo)\r\n");
-            xdo_send_keysequence_window(x, CURRENTWINDOW, "C", 0);
-            break;
-          case 92:
-            printf("Pulsante in basso a destra\r\n");
-            xdo_send_keysequence_window(x, CURRENTWINDOW, "A", 0);
-            break;
-          case 93:
-            if (line[14] == 'F')
-            {
-              printf("Manopola destra (Volume) GIU\r\n");
-              xdo_send_keysequence_window(x, CURRENTWINDOW, "B", 0);
-            }
-            else
-            {
-              printf("Manopola destra (Volume) SU\r\n");
-              xdo_send_keysequence_window(x, CURRENTWINDOW, "I", 0);
-            }
-            break;
           }
           break;
         }
