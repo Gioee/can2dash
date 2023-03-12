@@ -227,7 +227,7 @@ int ProcessEvents()
 
   xdo_t *x = xdo_new(NULL);
 
-  bool premuto = false;
+  Bool premuto = false;
 
   while (true)
   {
