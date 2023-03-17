@@ -379,9 +379,10 @@ int ProcessEvents()
         if (luminosita_nuova > 0 && luminosita_nuova < 30)
         {
 
-          char *query;
+          char query[STDSTR];
 
-          asprintf(&query, "/home/gioele/RPi-USB-Brightness/64/lite/Raspi_USB_Backlight_nogui -b %d", (int)((luminosita_nuova + 1) / 3));
+          strcpy(query, "/home/gioele/RPi-USB-Brightness/64/lite/Raspi_USB_Backlight_nogui -b ");
+          strcat(query, itoa((int)((luminosita_nuova + 1) / 3)));
 
           puts(query);
 
