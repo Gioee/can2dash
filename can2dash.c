@@ -380,7 +380,7 @@ int ProcessEvents()
           if(system("/home/gioele/RPi-USB-Brightness/64/lite/Raspi_USB_Backlight_nogui -b %d", (int)((luminosita_nuova + 1) / 3))==0){
             printf("LUMINOSITA %d\r\n", luminosita_nuova);
           } else {
-            printf("ERRORE LUMINOSITA\r\n")
+            printf("ERRORE LUMINOSITA\r\n");
           }
             
       }
