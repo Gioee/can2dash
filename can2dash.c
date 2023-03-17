@@ -22,7 +22,7 @@
 #include "can2dash.h"
 
 int sockfd = 0;
-//int luminosita = 30;
+// int luminosita = 30;
 
 int CharToDec(char c)
 {
@@ -356,7 +356,7 @@ int ProcessEvents()
       if (strncmp(line, "RX1 0450-460706", 15) == 0)
       {
         int luminosita_nuova = CharToDec(line[15]) + CharToDec(line[16]);
-        
+
         /*      DIRETTAMENTE SU DASH
                 if (luminosita_nuova != 0)
                 {
@@ -377,19 +377,23 @@ int ProcessEvents()
                 }
         */
         if (luminosita_nuova > 0 && luminosita_nuova < 30)
+        {
 
-char *query;
+          char *query;
 
-asprintf(&query,"/home/gioele/RPi-USB-Brightness/64/lite/Raspi_USB_Backlight_nogui -b %d",(int)((luminosita_nuova + 1) / 3));
+          asprintf(&query, "/home/gioele/RPi-USB-Brightness/64/lite/Raspi_USB_Backlight_nogui -b %d", (int)((luminosita_nuova + 1) / 3));
 
-puts(query);
+          puts(query);
 
-          if(system(query)==0){
+          if (system(query) == 0)
+          {
             printf("LUMINOSITA %d\r\n", luminosita_nuova);
-          } else {
+          }
+          else
+          {
             printf("ERRORE LUMINOSITA\r\n");
           }
-            
+        }
       }
     }
     else
