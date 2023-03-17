@@ -380,9 +380,12 @@ int ProcessEvents()
         {
 
           char query[STDSTR];
+          char numero[STDSTR];
 
           strcpy(query, "/home/gioele/RPi-USB-Brightness/64/lite/Raspi_USB_Backlight_nogui -b ");
-          strcat(query, itoa((int)((luminosita_nuova + 1) / 3)));
+
+          itoa((int)((luminosita_nuova + 1) / 3), numero, 10);
+          strcat(query, numero);
 
           puts(query);
 
