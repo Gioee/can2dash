@@ -22,7 +22,7 @@
 #include "can2dash.h"
 
 int sockfd = 0;
-int luminosita = 255;
+int lumws = 10;
 
 int CharToDec(char c)
 {
@@ -377,7 +377,7 @@ int ProcessEvents()
                   luminosita = luminosita_nuova;
                 }
         */
-        if (luminosita_nuova != luminosita)
+        if (valore_ws != lumws)
         {
           char query[73]; // 71
 
@@ -391,7 +391,7 @@ int ProcessEvents()
           {
             printf("==== ERRORE LUMINOSITA ====\r\n");
           }
-          luminosita = luminosita_nuova;
+          lumws = valore_ws;
         }
       }
     }
