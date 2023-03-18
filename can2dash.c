@@ -22,7 +22,7 @@
 #include "can2dash.h"
 
 int sockfd = 0;
-// int luminosita = 30;
+int luminosita = 255;
 
 int CharToDec(char c)
 {
@@ -355,7 +355,8 @@ int ProcessEvents()
 
       if (strncmp(line, "RX1 0450-460706", 15) == 0)
       {
-        int luminosita_nuova = CharToDec(line[15]) + CharToDec(line[16]);
+        int luminosita_nuova = CharToDec(line[15]) * 16 + CharToDec(line[16]);
+        int valore_ws = (int)(luminosita_nuova / 25.5);
 
         /*      DIRETTAMENTE SU DASH
                 if (luminosita_nuova != 0)
@@ -376,22 +377,21 @@ int ProcessEvents()
                   luminosita = luminosita_nuova;
                 }
         */
-        if (luminosita_nuova > 0 && luminosita_nuova < 30)
+        if (luminosita_nuova != luminosita)
         {
-          char query[73]; //71
+          char query[73]; // 71
 
-          sprintf(query, "/home/gioele/RPi-USB-Brightness/64/lite/Raspi_USB_Backlight_nogui -b %d", (int)((luminosita_nuova + 1) / 3));
-
-          puts(query);
+          sprintf(query, "/home/gioele/RPi-USB-Brightness/64/lite/Raspi_USB_Backlight_nogui -b %d", valore_ws);
 
           if (system(query) == 0)
           {
-            printf("LUMINOSITA %d\r\n", luminosita_nuova);
+            printf("%s\r\n", query);
           }
           else
           {
-            printf("ERRORE LUMINOSITA\r\n");
+            printf("==== ERRORE LUMINOSITA ====\r\n");
           }
+          luminosita = luminosita_nuova;
         }
       }
     }
@@ -413,15 +413,19 @@ void SetupCarberry()
   // if (Talk("VERSION\r\n")) printf("Version Ok!\r\n");
   // if (Talk("AT\r\n")) printf("AT Ok!\r\n");
 
-  if (Talk("CAN USER OPEN CH1 95K2\r\n"))
+  if (Talk("CAN USER ALIGN RIGHT\r\n"))
   {
-    printf("CAN APERTO A 95K2\r\n");
-    if (Talk("CAN USER MASK CH1 0FFF\r\n"))
-      printf("MASCHERA xFFF IMPOSTATA \r\n");
-    if (Talk("CAN USER FILTER CH1 0 0206\r\n"))
-      printf("FILTRO INDEX 206 IMPOSTATO\r\n");
-    if (Talk("CAN USER FILTER CH1 1 0450\r\n"))
-      printf("FILTRO INDEX 450 IMPOSTATO\r\n");
+    printf("CAN ALLINEATO A DESTRA");
+    if (Talk("CAN USER OPEN CH1 95K2\r\n"))
+    {
+      printf("CAN APERTO A 95K2\r\n");
+      if (Talk("CAN USER MASK CH1 0FFF\r\n"))
+        printf("MASCHERA xFFF IMPOSTATA \r\n");
+      if (Talk("CAN USER FILTER CH1 0 0206\r\n"))
+        printf("FILTRO INDEX 206 IMPOSTATO\r\n");
+      if (Talk("CAN USER FILTER CH1 1 0450\r\n"))
+        printf("FILTRO INDEX 450 IMPOSTATO\r\n");
+    }
   }
 }
 
