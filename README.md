@@ -1,5 +1,5 @@
-# can2dash
+# DEPRECATED
 
-A raspberry pi startup script to make astraDash communicate with carberry and astra h canbus
+## can2dash
 
-DEPRECATED. SEE ASTRADASH
+A raspberry pi startup script to make [astraDash](https://www.github.com/Gioee/astraDash) communicate with carberry and astra h canbus
